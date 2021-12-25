@@ -7,14 +7,14 @@ import { useInterval } from "../hooks/useInterval";
 import classes from "./grid.module.css";
 
 const Grid = () => {
-  const SIZE = 30;
   const [SPEED, setSpeed] = useState(300);
+  const [SIZE, setSize] = useState(30);
   const [grid, setGrid] = useState([]);
   const [isGameRunning, setIsGameRunning] = useState(false);
 
   useEffect(() => {
     setGrid(createGrid(SIZE));
-  }, []);
+  }, [SIZE]);
 
   useInterval(() => {
     if (isGameRunning) animate();
@@ -41,45 +41,59 @@ const Grid = () => {
   }
 
   return (
-    <div className={classes.container}>
+    <>
       <div className={classes["animation-control"]}>
-        <span className={classes["speed-label"]}>Speed (ms)</span>
-        <input
-          type="range"
-          min="0"
-          max="1000"
-          onChange={(e) => setSpeed(parseInt(e.target.value))}
-        />
-        <span>{SPEED}</span>
+        <div className={classes.control}>
+          <span className={classes["control-label"]}>Speed (ms)</span>
+          <input
+            type="range"
+            min="0"
+            max="1000"
+            onChange={(e) => setSpeed(parseInt(e.target.value))}
+          />
+          <span>{SPEED}</span>
+        </div>
+        <div className={classes.control}>
+          <span className={classes["control-label"]}>Grid Size</span>
+          <input
+            type="range"
+            min="10"
+            max="80"
+            onChange={(e) => setSize(parseInt(e.target.value))}
+          />
+          <span>{SIZE}</span>
+          <button
+            className={`${classes.btn} ${isGameRunning ? classes.danger : ""}`}
+            onClick={() => setIsGameRunning(!isGameRunning)}
+          >
+            {isGameRunning ? "Stop" : "Start"}
+          </button>
+        </div>
       </div>
-      <div className={classes.grid}>
-        {grid.map((row, idx) => (
-          <div key={idx} className={classes.row}>
-            {row.map((cell, idx) => (
-              <div
-                onClick={(e) => {
-                  cell.isAlive = !cell.isAlive;
-                  if (cell.isAlive) {
-                    e.target.style.backgroundColor = "black";
-                  } else {
-                    e.target.style.backgroundColor = "white";
-                  }
-                }}
-                key={idx}
-                className={classes.cell}
-                style={{ backgroundColor: cell.isAlive ? "black" : "white" }}
-              ></div>
-            ))}
-          </div>
-        ))}
+      <div className={classes.container}>
+        <div className={classes.grid}>
+          {grid.map((row, idx) => (
+            <div key={idx} className={classes.row}>
+              {row.map((cell, idx) => (
+                <div
+                  onClick={(e) => {
+                    cell.isAlive = !cell.isAlive;
+                    if (cell.isAlive) {
+                      e.target.style.backgroundColor = "black";
+                    } else {
+                      e.target.style.backgroundColor = "white";
+                    }
+                  }}
+                  key={idx}
+                  className={classes.cell}
+                  style={{ backgroundColor: cell.isAlive ? "black" : "white" }}
+                ></div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
-      <button
-        className={`${classes.btn} ${isGameRunning ? classes.danger : ""}`}
-        onClick={() => setIsGameRunning(!isGameRunning)}
-      >
-        {isGameRunning ? "Stop" : "Start"}
-      </button>
-    </div>
+    </>
   );
 };
 
