@@ -74,7 +74,7 @@ const Grid = () => {
         </div>
       </div>
       <div className={classes.container}>
-        <div className={classes.grid}>
+        <div className={classes.grid} onMouseLeave={() => setMouseDown(false)}>
           {grid.map((row, idx) => (
             <div key={idx} className={classes.row}>
               {row.map((cell, idx) => (
@@ -99,6 +99,7 @@ const Grid = () => {
                   }}
                   onMouseDown={() => setMouseDown(true)}
                   onMouseUp={() => setMouseDown(false)}
+                  onDrag={() => setMouseDown(false)}
                   key={idx}
                   className={classes.cell}
                   style={{ backgroundColor: cell.isAlive ? "black" : "white" }}
