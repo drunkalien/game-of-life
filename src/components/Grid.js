@@ -11,6 +11,7 @@ const Grid = () => {
   const [SIZE, setSize] = useState(30);
   const [grid, setGrid] = useState([]);
   const [isGameRunning, setIsGameRunning] = useState(false);
+  const [mouseDown, setMouseDown] = useState(false);
 
   useEffect(() => {
     setGrid(createGrid(SIZE));
@@ -47,7 +48,7 @@ const Grid = () => {
           <span className={classes["control-label"]}>Speed (ms)</span>
           <input
             type="range"
-            min="0"
+            min="50"
             max="1000"
             onChange={(e) => setSpeed(parseInt(e.target.value))}
           />
@@ -84,6 +85,18 @@ const Grid = () => {
                       e.target.style.backgroundColor = "white";
                     }
                   }}
+                  onMouseOver={(e) => {
+                    if (mouseDown) {
+                      cell.isAlive = !cell.isAlive;
+                      if (cell.isAlive) {
+                        e.target.style.backgroundColor = "black";
+                      } else {
+                        e.target.style.backgroundColor = "white";
+                      }
+                    }
+                  }}
+                  onMouseDown={() => setMouseDown(true)}
+                  onMouseUp={() => setMouseDown(false)}
                   key={idx}
                   className={classes.cell}
                   style={{ backgroundColor: cell.isAlive ? "black" : "white" }}
