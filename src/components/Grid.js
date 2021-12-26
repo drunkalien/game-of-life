@@ -7,19 +7,21 @@ import { useInterval } from "../hooks/useInterval";
 import classes from "./grid.module.css";
 
 const Grid = () => {
-  const [SPEED, setSpeed] = useState(300);
-  const [SIZE, setSize] = useState(30);
+  const SPEED = 300;
+  const SIZE = 30;
+  const [speed, setSpeed] = useState(SPEED);
+  const [size, setSize] = useState(SIZE);
   const [grid, setGrid] = useState([]);
   const [isGameRunning, setIsGameRunning] = useState(false);
   const [mouseDown, setMouseDown] = useState(false);
 
   useEffect(() => {
-    setGrid(createGrid(SIZE));
-  }, [SIZE]);
+    setGrid(createGrid(size));
+  }, [size]);
 
   useInterval(() => {
     if (isGameRunning) animate();
-  }, SPEED);
+  }, speed);
 
   function animate() {
     const newGrid = grid.map((row, rowIdx) =>
@@ -52,7 +54,7 @@ const Grid = () => {
             max="1000"
             onChange={(e) => setSpeed(parseInt(e.target.value))}
           />
-          <span>{SPEED}</span>
+          <span>{speed}</span>
         </div>
         <div className={classes.control}>
           <span className={classes["control-label"]}>Grid Size</span>
@@ -62,7 +64,7 @@ const Grid = () => {
             max="80"
             onChange={(e) => setSize(parseInt(e.target.value))}
           />
-          <span>{SIZE}</span>
+          <span>{size}</span>
           <button
             className={`${classes.btn} ${isGameRunning ? classes.danger : ""}`}
             onClick={() => setIsGameRunning(!isGameRunning)}
